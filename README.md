@@ -1,6 +1,6 @@
-# meta-autoresearch
+# Optimizing the Optimizer of the Optimizer
 
-A fork of [karpathy/autoresearch](https://github.com/karpathy/autoresearch) that adds cross-session memory — optimizing the optimizer of the optimizer.
+A fork of [karpathy/autoresearch](https://github.com/karpathy/autoresearch) that adds cross-session memory.
 
 ## The problem
 
