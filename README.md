@@ -47,13 +47,32 @@ Hi have a look at program.md and let's kick off a new experiment! let's do the s
 
 The `program.md` file is essentially a super lightweight "skill".
 
+## Optimizing the optimizer of the optimizer
+
+The agent has no memory between sessions — it re-discovers the same things every time. Two scripts fix this by building a persistent knowledge base across sessions:
+
+- **`score_session.py`** — reads `results.tsv` and outputs structured session diagnostics (best bpb, keep rate, crash rate, longest plateau, etc.)
+- **`update_discoveries.py`** — reads `results.tsv` and updates `discoveries.md`, a cross-session knowledge base of what worked, what failed, and what's worth exploring
+
+After each session, run:
+
+```bash
+python score_session.py results.tsv
+python update_discoveries.py results.tsv
+```
+
+The next session's agent reads `discoveries.md` at startup — skipping known dead ends, prioritizing proven winners, and picking up where the last session left off. See `META.md` for the full explanation of why this is meta-meta-programming.
+
 ## Project structure
 
 ```
-prepare.py      — constants, data prep + runtime utilities (do not modify)
-train.py        — model, optimizer, training loop (agent modifies this)
-program.md      — agent instructions
-pyproject.toml  — dependencies
+prepare.py              — constants, data prep + runtime utilities (do not modify)
+train.py                — model, optimizer, training loop (agent modifies this)
+program.md              — agent instructions
+score_session.py        — session scoring (cross-session feedback loop)
+update_discoveries.py   — builds/updates discoveries.md from results
+META.md                 — explains the meta-meta-programming layer
+pyproject.toml          — dependencies
 ```
 
 ## Design choices
